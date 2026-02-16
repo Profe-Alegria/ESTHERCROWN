@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESTHERCROWN | Catálogo Oficial</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================
+           ESTILO ROSA PROTAGONISTA
+           ========================================= */
+        :root {
+            --color-protagonista: #e91e63; /* Rosa Fuerte */
+            --color-fondo: #fce4ec; /* Rosa Pálido */
+            --color-texto: #880e4f; /* Vino Tinto */
+            --color-blanco: #ffffff;
+            --fuente-titulo: 'Playfair Display', serif;
+            --fuente-texto: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            font-family: var(--fuente-texto);
+            margin: 0;
+        }
+
+        /* --- ENCABEZADO --- */
+        header {
+            background: linear-gradient(135deg, #ff4081, #c2185b);
+            color: var(--color-blanco);
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+        }
+
+        h1 {
+            font-family: var(--fuente-titulo);
+            font-size: 3rem;
+            margin: 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitulo {
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            margin-top: 5px;
+            font-weight: 300;
+        }
+
+        /* --- CATÁLOGO --- */
+        .catalogo {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-bottom: 80px;
+        }
+
+        /* --- TARJETA DE PRODUCTO --- */
+        .producto {
+            background: var(--color-blanco);
+            width: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(136, 14, 79, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #f8bbd0;
+        }
+
+        .producto:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(233, 30, 99, 0.3);
+            border-color: var(--color-protagonista);
+        }
+
+        .media-container {
+            height: 320px;
+            background-color: #ffebee;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .media-container img, .media-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .media-container img:after {
+            content: "⚠️ No se ve la imagen.";
+            display: block; font-size: 12px; color: red; text-align: center;
+        }
+
+        .etiqueta-video {
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(0,0,0,0.6); color: white;
+            padding: 5px 10px; border-radius: 20px; font-size: 0.8rem;
+            z-index: 10;
+        }
+
+        .info-prod {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .nombre {
+            font-family: var(--fuente-titulo);
+            font-size: 1.3rem;
+            color: var(--color-protagonista);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .precio {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .btn-agregar {
+            background-color: var(--color-protagonista);
+            color: var(--color-blanco);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            transition: background 0.3s;
+            box-shadow: 0 4px 10px rgba(233, 30, 99, 0.3);
+        }
+
+        .btn-agregar:hover { background-color: #c2185b; }
+
+        /* --- BOTÓN FLOTANTE --- */
+        .btn-flotante {
+            position: fixed; bottom: 20px; right: 20px;
+            background-color: #25D366; 
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 100;
+            border: 2px solid white;
+            display: flex; gap: 10px; align-items: center;
+            animation: palpitar 2s infinite;
+        }
+
+        @keyframes palpitar {
+            0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); }
+        }
+
+        /* --- MODAL CARRITO --- */
+        #modal-carrito {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(88, 14, 45, 0.8);
+            z-index: 200;
+            justify-content: center; align-items: center;
+        }
+
+        .ventana-carrito {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%; max-width: 500px;
+            position: relative;
+            max-height: 90vh; overflow-y: auto;
+        }
+
+        input, textarea {
+            background: #fff0f6; border: 1px solid #f48fb1;
+            padding: 12px; width: 100%; margin-bottom: 15px;
+            border-radius: 8px; box-sizing: border-box; color: var(--color-texto);
+        }
+
+        .btn-enviar {
+            background-color: #25D366;
+            color: white; padding: 15px; width: 100%; border: none;
+            border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer;
+        }
+
+        .cerrar { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: var(--color-protagonista); }
+        .item-lista { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px 0; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>ESTHERCROWN</h1>
+        <div class="subtitulo">ACCESORIOS Y DIADEMAS</div>
+    </header>
+
+    <div class="catalogo" id="contenedor"></div>
+
+    <div class="btn-flotante" onclick="verCarrito()">
+        <span>🛍️ MI PEDIDO</span>
+        <span id="contador" style="background: white; color: #25D366; padding: 2px 8px; border-radius: 10px;">0</span>
+    </div>
+
+    <div id="modal-carrito">
+        <div class="ventana-carrito">
+            <span class="cerrar" onclick="cerrarCarrito()">&times;</span>
+            <h2 style="color: var(--color-protagonista); text-align: center; margin-top:0;">Tu Selección</h2>
+            
+            <div id="lista-carrito" style="margin-bottom: 20px;">
+                <p style="text-align:center; color:#999">Carrito vacío 🌸</p>
+            </div>
+            
+            <h3 style="text-align:right; color:#333">Total: $<span id="total">0</span></h3>
+            <hr style="border:0; border-top:1px solid #f8bbd0; margin: 20px 0;">
+
+            <label>Tu Nombre:</label>
+            <input type="text" id="nombre" placeholder="Nombre completo">
+            
+            <label>Fecha de entrega:</label>
+            <input type="date" id="fecha">
+
+            <label>Detalles (Color, Medida, etc):</label>
+            <textarea id="detalles" rows="2" placeholder="Ej: La quiero en color rosa pastel..."></textarea>
+
+            <button class="btn-enviar" onclick="enviarWhatsApp()">ENVIAR PEDIDO A WHATSAPP 📲</button>
+            <p style="font-size:0.8rem; text-align:center; color:#999; margin-top:10px;">Se abrirá WhatsApp con los detalles de las fotos.</p>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURACIÓN ---
+        const telefono = "573028270879"; 
+        
+        // 🛑 PEGA AQUÍ TU ENLACE DE GITHUB CUANDO LO TENGAS 🛑
+        // Ejemplo: let urlPaginaWeb = "https://usuario.github.io/esthercrown";
+        // Por ahora lo dejo automático para que te funcione al probar:
+        let urlPaginaWeb = window.location.href.replace('/index.html', '');
+
+        // --- LISTA DE PRODUCTOS ACTUALIZADA (1-8 y T1-T4) ---
+        // Recuerda: Carpeta "imagenes" (sin tilde) y archivos ".jpeg"
+        const productos = [
+            // --- DIADEMAS (1 al 8) ---
+            { id: 1, nombre: "Diadema Modelo 1", precio: 30000, archivo: "imagenes/diadema1.jpeg" },
+            { id: 2, nombre: "Diadema Modelo 2", precio: 40000, archivo: "imagenes/diadema2.jpeg" },
+            { id: 3, nombre: "Diadema Modelo 3", precio: 35000, archivo: "imagenes/diadema3.jpeg" },
+            { id: 4, nombre: "Diadema Modelo 4", precio: 30000, archivo: "imagenes/diadema4.jpeg" },
+            { id: 5, nombre: "Diadema Modelo 5", precio: 35000, archivo: "imagenes/diadema5.jpeg" },
+            { id: 6, nombre: "Diadema Modelo 6", precio: 30000, archivo: "imagenes/diadema6.jpeg" },
+            { id: 7, nombre: "Diadema Modelo 7", precio: 80000, archivo: "imagenes/diadema7.jpeg" },
+            { id: 8, nombre: "Diadema Modelo 8", precio: 140000, archivo: "imagenes/diadema8.jpeg" },
+            
+            // --- DIADEMAS TELA (T1 al T4) ---
+            { id: 9, nombre: "Diadema Tela 1", precio: 35000, archivo: "imagenes/diademaT1.jpeg" },
+            { id: 10, nombre: "Diadema Tela 2", precio: 80000, archivo: "imagenes/diademaT2.jpeg" },
+            { id: 11, nombre: "Diadema Tela 3", precio: 20000, archivo: "imagenes/diademaT3.jpeg" },
+            { id: 12, nombre: "Diadema Tela 4", precio: 20000, archivo: "imagenes/diademaT4.jpeg" },
+
+            // --- PINZAS ---
+            { id: 13, nombre: "Set Pinzas 1", precio: 15000, archivo: "imagenes/pinzas1.jpeg" },
+            { id: 14, nombre: "Set Pinzas 2", precio: 15000, archivo: "imagenes/pinzas2.jpeg" },
+            { id: 15, nombre: "Set Pinzas 3", precio: 15000, archivo: "imagenes/pinzas3.jpeg" },
+
+            // --- VIDEOS ---
+            { id: 16, nombre: "Video Pinzas", precio: 15000, archivo: "videos/pinzas1.mp4" },
+            { id: 17, nombre: "Video Tiara", precio: 25000, archivo: "videos/tiara.mp4" }
+        ];
+
+        let carrito = [];
+
+        window.onload = function() {
+            let carritoGuardado = localStorage.getItem('carritoEstherCrown');
+            if (carritoGuardado) {
+                carrito = JSON.parse(carritoGuardado);
+                actualizar();
+            }
+            cargar();
+        }
+
+        function cargar() {
+            const cont = document.getElementById('contenedor');
+            cont.innerHTML = "";
+            productos.forEach(p => {
+                let mediaHTML = '';
+                let esVideo = p.archivo.toLowerCase().endsWith('.mp4');
+                if (esVideo) {
+                    mediaHTML = `<video src="${p.archivo}" autoplay loop muted playsinline></video><div class="etiqueta-video">▶ VIDEO</div>`;
+                } else {
+                    mediaHTML = `<img src="${p.archivo}" alt="${p.nombre}">`;
+                }
+                cont.innerHTML += `
+                    <div class="producto">
+                        <div class="media-container">${mediaHTML}</div>
+                        <div class="info-prod">
+                            <div class="nombre">${p.nombre}</div>
+                            <div class="precio">$${p.precio.toLocaleString()}</div>
+                            <button class="btn-agregar" onclick="add(${p.id})">LO QUIERO 💖</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function add(id) {
+            carrito.push(productos.find(p => p.id === id));
+            guardarEnMemoria();
+            actualizar();
+            const btn = document.querySelector('.btn-flotante');
+            btn.style.transform = "scale(1.1)";
+            setTimeout(() => btn.style.transform = "scale(1)", 200);
+        }
+
+        function actualizar() {
+            document.getElementById('contador').innerText = carrito.length;
+        }
+
+        function guardarEnMemoria() {
+            localStorage.setItem('carritoEstherCrown', JSON.stringify(carrito));
+        }
+
+        function verCarrito() {
+            document.getElementById('modal-carrito').style.display = 'flex';
+            renderLista();
+        }
+
+        function renderLista() {
+            const lista = document.getElementById('lista-carrito');
+            lista.innerHTML = "";
+            let total = 0;
+            if(carrito.length === 0) {
+                lista.innerHTML = "<p style='text-align:center; color:#999'>Carrito vacío 🌸</p>";
+            } else {
+                carrito.forEach((p, i) => {
+                    total += p.precio;
+                    lista.innerHTML += `
+                    <div class="item-lista">
+                        <span>${p.nombre}</span>
+                        <span>$${p.precio.toLocaleString()} <b style="color:#e91e63; cursor:pointer; margin-left:10px;" onclick="borrar(${i})">✕</b></span>
+                    </div>`;
+                });
+            }
+            document.getElementById('total').innerText = total.toLocaleString();
+        }
+
+        function cerrarCarrito() { document.getElementById('modal-carrito').style.display = 'none'; }
+        
+        function borrar(i) { carrito.splice(i, 1); guardarEnMemoria(); renderLista(); actualizar(); }
+
+        function enviarWhatsApp() {
+            let n = document.getElementById('nombre').value;
+            let f = document.getElementById('fecha').value;
+            let d = document.getElementById('detalles').value;
+            
+            if(!n) return alert("Por favor dinos tu nombre 🌸");
+
+            let msg = `HOLA ESTHERCROWN 👑, SOY *${n.toUpperCase()}*.%0A%0AQUIERO PEDIR:%0A`;
+            
+            carrito.forEach(p => {
+                let linkImagen = urlPaginaWeb + '/' + p.archivo;
+                linkImagen = linkImagen.replace(/ /g, '%20'); 
+
+                msg += `🎀 ${p.nombre} ($${p.precio})%0A`;
+                msg += `🖼️ Ver Foto: ${linkImagen}%0A%0A`;
+            });
+            
+            let total = document.getElementById('total').innerText;
+            msg += `---------------------------%0A💰 TOTAL: $${total}%0A`;
+            if(f) msg += `📅 FECHA: ${f}%0A`;
+            if(d) msg += `📝 DETALLES: ${d}`;
+
+            window.open(`https://wa.me/${telefono}?text=${msg}`, '_blank');
+        }
+    </script>
+</body>
+</html>
